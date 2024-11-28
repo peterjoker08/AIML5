@@ -1,0 +1,25 @@
+behaviors:
+  MyDQNAgent:
+    trainer_type: dqn
+    hyperparameters:
+      epsilon_start: 1.0
+      epsilon_end: 0.1
+      epsilon_decay: 1000
+      learning_rate: 0.001
+      gamma: 0.99
+      batch_size: 64
+      replay_buffer_size: 10000
+      hidden_units: 128
+      update_frequency: 4
+    network_settings:
+      normalize: true
+      hidden_units: 128
+      num_layers: 2
+    reward_signals:
+      extrinsic:
+        gamma: 0.99
+        strength: 1.0
+    keep_checkpoints: 5
+    max_steps: 500000
+    time_horizon: 1000
+    summary_freq: 12000
