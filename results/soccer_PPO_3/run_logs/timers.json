@@ -1,0 +1,42 @@
+{
+    "name": "root",
+    "metadata": {
+        "timer_format_version": "0.1.0",
+        "start_time_seconds": "1733249756",
+        "python_version": "3.8.8 (default, Apr 13 2021, 12:59:45) \n[Clang 10.0.0 ]",
+        "command_line_arguments": "/Users/Carrey/opt/anaconda3/bin/mlagents-learn config/ppo/SoccerTwos.yaml --run-id=soccer_PPO_3",
+        "mlagents_version": "0.29.0",
+        "mlagents_envs_version": "0.29.0",
+        "communication_protocol_version": "1.5.0",
+        "pytorch_version": "1.8.1",
+        "numpy_version": "1.21.2",
+        "end_time_seconds": "1733249758"
+    },
+    "total": 1.056035955,
+    "count": 1,
+    "self": 0.005966075999999987,
+    "children": {
+        "run_training.setup": {
+            "total": 0.12299666200000003,
+            "count": 1,
+            "self": 0.12299666200000003
+        },
+        "TrainerController.start_learning": {
+            "total": 0.927073217,
+            "count": 1,
+            "self": 6.5097000000236e-05,
+            "children": {
+                "TrainerController._reset_env": {
+                    "total": 0.9269836709999999,
+                    "count": 1,
+                    "self": 0.9269836709999999
+                },
+                "TrainerController._save_models": {
+                    "total": 2.4448999999870935e-05,
+                    "count": 1,
+                    "self": 2.4448999999870935e-05
+                }
+            }
+        }
+    }
+}

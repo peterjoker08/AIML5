@@ -1,0 +1,34 @@
+behaviors:
+  SoccerTwos:
+    trainer_type: sac
+    hyperparameters:
+      batch_size: 2048 # Keep this unchanged for now.
+      buffer_size: 20480 # Replay buffer size remains the same.
+      learning_rate: 0.0003 # Default SAC learning rate.
+      beta: 0.005 # Keep this as is unless exploration needs fine-tuning.
+      init_entcoef: 0.5 # New parameter: Initial entropy coefficient.
+      tau: 0.005 # New parameter: Soft target update rate.
+      steps_per_update: 10 # New parameter: Agent steps per policy update.
+    network_settings:
+      normalize: false # Same as before.
+      hidden_units: 512 # Use a larger network for complex tasks.
+      num_layers: 2 # Same depth as before.
+      vis_encode_type: simple # Use simple visual encoder.
+      memory:
+        sequence_length: 128 # Retain memory from the previous config.
+        memory_size: 256
+    reward_signals:
+      extrinsic:
+        gamma: 0.99 # Unchanged.
+        strength: 1.0 # Unchanged.
+    keep_checkpoints: 5
+    max_steps: 5000000 # Training steps remain the same.
+    time_horizon: 1000 # Same value to encourage episodic learning.
+    summary_freq: 10000 # Maintain the frequency of summaries for TensorBoard.
+    self_play:
+      save_steps: 50000
+      team_change: 200000
+      swap_steps: 2000
+      window: 10
+      play_against_latest_model_ratio: 0.5
+      initial_elo: 1200.0
