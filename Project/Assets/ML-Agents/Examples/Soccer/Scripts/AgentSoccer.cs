@@ -2,6 +2,10 @@ using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Policies;
+using System.Collections.Generic;
+using Unity.MLAgents.Sensors;
+
+
 
 public enum Team
 {
@@ -151,62 +155,62 @@ public class AgentSoccer : Agent
             ForceMode.VelocityChange);
     }
 
-public override void OnActionReceived(ActionBuffers actionBuffers)
-{
-    // Get current forward ray distances.
-    List<float> currentRayObservations = GetForwardRayDistances();
-
-    // Store the current observations into memory.
-    StoreObservation(currentRayObservations);
-
-    // Get the combined memory of past observations.
-    List<float> memoryData = GetObservationMemory();
-
-    // Debug or process `memoryData` if needed.
-
-    // Continue with movement logic.
-    MoveAgent(actionBuffers.DiscreteActions);
-
-    if (position == Position.Goalie)
+    public override void OnActionReceived(ActionBuffers actionBuffers)
     {
-        // Existential bonus for Goalies.
-        AddReward(m_Existential);
-    }
-    else if (position == Position.Striker)
-    {
-        // Existential penalty for Strikers.
-        AddReward(-m_Existential);
-    }
-}
+        // Get current forward ray distances.
+        List<float> currentRayObservations = GetForwardRayDistances();
 
-private List<float> GetForwardRayDistances()
-{
-    List<float> distances = new List<float>();
-    float rayLength = 20f; // Your configured ray length.
-    int raysPerDirection = 5; // As configured.
-    float maxRayDegrees = 60f; // As configured.
+        // Store the current observations into memory.
+        StoreObservation(currentRayObservations);
 
-    float angleStep = maxRayDegrees / raysPerDirection;
-    Vector3 forward = transform.forward;
+        // Get the combined memory of past observations.
+        List<float> memoryData = GetObservationMemory();
 
-    // Cast rays in a 120-degree arc in front of the agent.
-    for (int i = -raysPerDirection; i <= raysPerDirection; i++)
-    {
-        float angle = i * angleStep;
-        Vector3 direction = Quaternion.Euler(0, angle, 0) * forward;
+        // Debug or process `memoryData` if needed.
 
-        if (Physics.Raycast(transform.position, direction, out RaycastHit hit, rayLength))
+        // Continue with movement logic.
+        MoveAgent(actionBuffers.DiscreteActions);
+
+        if (position == Position.Goalie)
         {
-            distances.Add(hit.distance / rayLength); // Normalize the distance.
+            // Existential bonus for Goalies.
+            AddReward(m_Existential);
         }
-        else
+        else if (position == Position.Striker)
         {
-            distances.Add(1.0f); // No hit, add max normalized distance.
+            // Existential penalty for Strikers.
+            AddReward(-m_Existential);
         }
     }
 
-    return distances;
-}
+    private List<float> GetForwardRayDistances()
+    {
+        List<float> distances = new List<float>();
+        float rayLength = 20f; // Your configured ray length.
+        int raysPerDirection = 5; // As configured.
+        float maxRayDegrees = 60f; // As configured.
+
+        float angleStep = maxRayDegrees / raysPerDirection;
+        Vector3 forward = transform.forward;
+
+        // Cast rays in a 120-degree arc in front of the agent.
+        for (int i = -raysPerDirection; i <= raysPerDirection; i++)
+        {
+            float angle = i * angleStep;
+            Vector3 direction = Quaternion.Euler(0, angle, 0) * forward;
+
+            if (Physics.Raycast(transform.position, direction, out RaycastHit hit, rayLength))
+            {
+                distances.Add(hit.distance / rayLength); // Normalize the distance.
+            }
+            else
+            {
+                distances.Add(1.0f); // No hit, add max normalized distance.
+            }
+        }
+
+        return distances;
+    }
 
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -269,25 +273,25 @@ private List<float> GetForwardRayDistances()
     }
 
     public void StoreObservation(List<float> rayDistances)
-{
-    // Store the current forward ray observations into memory.
-    if (observationMemory.Count >= memorySize)
     {
-        observationMemory.Dequeue(); // Remove the oldest memory.
+        // Store the current forward ray observations into memory.
+        if (observationMemory.Count >= memorySize)
+        {
+            observationMemory.Dequeue(); // Remove the oldest memory.
+        }
+        observationMemory.Enqueue(rayDistances); // Store the new observation.
     }
-    observationMemory.Enqueue(rayDistances); // Store the new observation.
-}
 
-public List<float> GetObservationMemory()
-{
-    // Aggregate observations from previous frames.
-    List<float> combinedMemory = new List<float>();
-    foreach (var obs in observationMemory)
+    public List<float> GetObservationMemory()
     {
-        combinedMemory.AddRange(obs);
+        // Aggregate observations from previous frames.
+        List<float> combinedMemory = new List<float>();
+        foreach (var obs in observationMemory)
+        {
+            combinedMemory.AddRange(obs);
+        }
+        return combinedMemory;
     }
-    return combinedMemory;
-}
 
 
 }
