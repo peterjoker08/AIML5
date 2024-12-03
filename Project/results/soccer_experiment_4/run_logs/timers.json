@@ -1,0 +1,42 @@
+{
+    "name": "root",
+    "metadata": {
+        "timer_format_version": "0.1.0",
+        "start_time_seconds": "1731586544",
+        "python_version": "3.8.8 (default, Apr 13 2021, 12:59:45) \n[Clang 10.0.0 ]",
+        "command_line_arguments": "/Users/Carrey/opt/anaconda3/bin/mlagents-learn Basic.yaml --run-id=soccer_experiment_4",
+        "mlagents_version": "0.29.0",
+        "mlagents_envs_version": "0.29.0",
+        "communication_protocol_version": "1.5.0",
+        "pytorch_version": "1.8.1",
+        "numpy_version": "1.21.2",
+        "end_time_seconds": "1731586566"
+    },
+    "total": 22.090804527,
+    "count": 1,
+    "self": 0.008773393999998547,
+    "children": {
+        "run_training.setup": {
+            "total": 0.13774597500000008,
+            "count": 1,
+            "self": 0.13774597500000008
+        },
+        "TrainerController.start_learning": {
+            "total": 21.944285158,
+            "count": 1,
+            "self": 0.00011529800000076307,
+            "children": {
+                "TrainerController._reset_env": {
+                    "total": 21.944111837,
+                    "count": 1,
+                    "self": 21.944111837
+                },
+                "TrainerController._save_models": {
+                    "total": 5.802299999757565e-05,
+                    "count": 1,
+                    "self": 5.802299999757565e-05
+                }
+            }
+        }
+    }
+}
