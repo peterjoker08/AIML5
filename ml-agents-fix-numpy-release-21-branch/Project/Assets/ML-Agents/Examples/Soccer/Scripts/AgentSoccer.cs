@@ -235,6 +235,7 @@ public float visionFOV = 90f; // Field of view in degrees
 public void CheckVision()
 {
     // Calculate the forward direction of the vision cone
+    visionAngle = Random.Range(0, 360); // Random angle between 0 and 360 degrees
     Quaternion visionRotation = Quaternion.Euler(0, visionAngle, 0);
     Vector3 visionDirection = visionRotation * transform.forward;
 
